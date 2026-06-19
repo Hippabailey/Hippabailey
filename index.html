@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hippa & Bailey</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #faf7f4;
+      font-family: 'Georgia', serif;
+      color: #3a3a3a;
+    }
+
+    header {
+      text-align: center;
+      padding: 60px 20px 40px;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      letter-spacing: 2px;
+      color: #2c2c2c;
+    }
+
+    header p {
+      margin-top: 10px;
+      font-size: 1.1rem;
+      color: #888;
+      font-style: italic;
+    }
+
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: #c9a97a;
+      margin: 20px auto 0;
+    }
+
+    /* ── Gallery grid ── */
+    .gallery {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 20px 60px;
+      columns: 3 280px;
+      column-gap: 16px;
+    }
+
+    .photo-card {
+      break-inside: avoid;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+    }
+
+    .photo-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    }
+
+    .photo-card img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .photo-card .caption {
+      padding: 12px 16px;
+      font-size: 0.9rem;
+      color: #777;
+      text-align: center;
+    }
+
+    /* ── Lightbox ── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    #lightbox.open {
+      display: flex;
+    }
+
+    #lightbox img {
+      max-width: 90vw;
+      max-height: 80vh;
+      border-radius: 10px;
+      object-fit: contain;
+    }
+
+    #lightbox-caption {
+      color: #ddd;
+      font-style: italic;
+      font-size: 1rem;
+    }
+
+    #lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 28px;
+      font-size: 2rem;
+      color: #fff;
+      background: none;
+      border: none;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    /* ── Empty state ── */
+    .empty-note {
+      text-align: center;
+      padding: 60px 20px;
+      color: #aaa;
+      font-style: italic;
+      font-size: 1.1rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 0.8rem;
+      color: #bbb;
+      border-top: 1px solid #ece8e3;
+    }
+
+    @media (max-width: 500px) {
+      header h1 { font-size: 2rem; }
+      .gallery { columns: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Hippa &amp; Bailey</h1>
+    <p>Our favorite two in the whole world</p>
+    <div class="divider"></div>
+  </header>
+
+  <main>
+    <div class="gallery" id="gallery">
+
+      <div class="photo-card" onclick="openLightbox(this)">
+        <img src="IMG_0904.jpg" alt="Bailey in the snow" />
+        <div class="caption">Bailey in the snow</div>
+      </div>
+
+      <div class="photo-card" onclick="openLightbox(this)">
+        <img src="IMG_0905.jpg" alt="Bailey exploring the snow" />
+        <div class="caption">Bailey exploring</div>
+      </div>
+
+      <div class="photo-card" onclick="openLightbox(this)">
+        <img src="IMG_1449.jpg" alt="Hippa soaking up the sun" />
+        <div class="caption">Hippa soaking up the sun</div>
+      </div>
+
+      <div class="photo-card" onclick="openLightbox(this)">
+        <img src="IMG_2357.jpg" alt="Hippa sending mail" />
+        <div class="caption">Hippa sending mail</div>
+      </div>
+
+      <div class="photo-card" onclick="openLightbox(this)">
+        <img src="IMG_2359.jpg" alt="Bailey looking cozy" />
+        <div class="caption">Bailey looking cozy</div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Lightbox -->
+  <div id="lightbox">
+    <button id="lightbox-close" onclick="closeLightbox()">&#x2715;</button>
+    <img id="lightbox-img" src="" alt="" />
+    <div id="lightbox-caption"></div>
+  </div>
+
+  <footer>
+    Made with love for Hippa &amp; Bailey
+  </footer>
+
+  <script>
+    function openLightbox(card) {
+      const img = card.querySelector('img');
+      const cap = card.querySelector('.caption');
+      document.getElementById('lightbox-img').src = img.src;
+      document.getElementById('lightbox-img').alt = img.alt;
+      document.getElementById('lightbox-caption').textContent = cap ? cap.textContent : '';
+      document.getElementById('lightbox').classList.add('open');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+    }
+
+    document.getElementById('lightbox').addEventListener('click', function(e) {
+      if (e.target === this) closeLightbox();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+
+</body>
+</html>
